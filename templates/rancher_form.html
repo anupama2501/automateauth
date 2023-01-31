@@ -1,6 +1,16 @@
-<form action="/action_page.php">
+<body>
+    Enabling auth provider {{ value }} on your rancher server.
+    <br><br>
+    Please enter the below details.
+</body>
+
+<form action="/authenticate" method = "POST">
   <label for="rancherurl">Rancher Server URL: </label>
-  <input type="text" id="rancherurl" name="url"><br><br>
+
+<input type="url" name="url" id="rancherurl"
+       placeholder="http://rancherurl"
+       pattern="https://.*" size="30"
+       required><br><br>
   <label for="accesskey">API Access key: </label>
   <input type="text" id="accesskey" name="accesskey"><br><br>
   <label for="secretkey">API Secret key: </label>

@@ -1,9 +1,9 @@
-<html> 
+<br>
 <h2> Select your favorite ldap provider </h2> </br>
-<body>
 
-    <a href="/rancherform"><input type="button" value="OpenLDAP"></a>
-    <a href="/rancherform"><input type="button" value="FreeIPA"></a>
-    <a href="/rancherform"><input type="button" value="AD"></a> 
-</body> 
+<form action="/rancherform" method="get" id="nameform"> </form>
+
+  <button type="submit" form="nameform" name="authprovider" value="openLdap">openLDAP</button> </br> </br>
+  <button type="submit" form="nameform" name="authprovider" value="freeIpa">freeIPA</button> </br> </br>
+  <button type="submit" form="nameform" name="authprovider" value="activeDirectory">Active Directory</button> </br> </br>
 </html>
