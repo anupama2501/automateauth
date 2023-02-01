@@ -1,19 +1,51 @@
-<body>
-    Enabling auth provider {{ value }} on your rancher server.
-    <br><br>
-    Please enter the below details.
-</body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rancher Auth</title>
+    <link rel="stylesheet" type="text/css" href="/staticFiles/index.css" />
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="sub-container">
+        <div class="form-container">
+          <h2>Enabling auth provider <span class="provider">{{ value }}</span></h2>
+          <p>Please enter the below details.</p>
 
-<form action="/authenticate" method = "POST">
-  <label for="rancherurl">Rancher Server URL: </label>
+          <form action="/authenticate" method="POST">
+            <label for="rancherurl"></label>
+            <input
+              type="url"
+              name="url"
+              id="rancherurl"
+              placeholder="http://rancherurl"
+              pattern="https://.*"
+              size="30"
+              required
+            />
 
-<input type="url" name="url" id="rancherurl"
-       placeholder="http://rancherurl"
-       pattern="https://.*" size="30"
-       required><br><br>
-  <label for="accesskey">API Access key: </label>
-  <input type="text" id="accesskey" name="accesskey"><br><br>
-  <label for="secretkey">API Secret key: </label>
-  <input type="text" id="secretkey" name="secretkey"><br><br>
-  <input type="submit" value="Submit">
-</form> 
+            <label for="accesskey"></label>
+            <input
+              type="text"
+              id="accesskey"
+              name="accesskey"
+              placeholder="Access Key"
+            />
+
+            <label for="secretkey"></label>
+            <input
+              type="text"
+              id="secretkey"
+              name="secretkey"
+              placeholder="Secret Key"
+            />
+
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
