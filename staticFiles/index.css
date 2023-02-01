@@ -144,6 +144,7 @@ h2 {
 
 a {
   text-align: center;
+  width: 100%;
 }
 
 .main-container {
@@ -156,12 +157,11 @@ a {
 
 .sub-container {
   width: 33%;
-  height: 300px;
+  height: 450px;
   background-color: #eeeeee;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 40px;
   border-radius: 10px;
   box-shadow: 7px 10px 12px -5px rgba(0, 0, 0, 0.56);
 }
@@ -170,6 +170,7 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 input[type="button"] {
@@ -185,5 +186,21 @@ input[type="button"] {
 }
 
 input[type="button"]:hover {
+  filter: brightness(0.85);
+}
+
+button {
+  font-size: 1.2em;
+  background-color: #04aa6d;
+  width: 50%;
+  border: none;
+  color: #fff;
+  padding: 16px 32px;
+  text-decoration: none;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+button:hover {
   filter: brightness(0.85);
 }
