@@ -32,9 +32,10 @@ def oauth_route():
 @app.route("/rancherform",  methods=["GET"])
 def rancherform():
     global AUTH
+    auth_servers_not_reachable = ["activedirectory", "keycloak", "adfs", "pingidentity"]
     AUTH = request.args['authprovider']
-    if AUTH == "activeDirectory":
-        return "We are sorry, AD server is currently not working."
+    if AUTH.lower() in auth_servers_not_reachable:
+        return "We are sorry, {auth} server is currently not working.".format(auth=AUTH)
     return render_template("rancher_form.html", value=AUTH)
 
 
