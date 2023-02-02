@@ -1,11 +1,64 @@
-<br>
-<h2> Select your favorite saml provider </h2> </br>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Rancher Auth</title>
+    <link rel="stylesheet" type="text/css" href="/staticFiles/index.css" />
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="sub-container">
+        <h2>Select your favorite saml provider</h2>
+        <form action="/rancherform" method="get" id="nameform"></form>
 
-<form action="/rancherform" method="get" id="nameform"> </form>
-
-  <button type="submit" form="nameform" name="authprovider" value="adfs">ADFS</button> </br> </br>
-  <button type="submit" form="nameform" name="authprovider" value="keyCloak">KeyCloak</button> </br> </br>
-  <button type="submit" form="nameform" name="authprovider" value="okta">Okta</button> </br> </br>
-  <button type="submit" form="nameform" name="authprovider" value="ping">Ping Identity</button> </br> </br>
-  <button type="submit" form="nameform" name="authprovider" value="shibboleth">Shibboleth</button> </br> </br>
+        <div class="button-container">
+          <button
+            type="submit"
+            form="nameform"
+            name="authprovider"
+            value="adfs"
+          >
+            ADFS
+          </button>
+          <button
+            type="submit"
+            form="nameform"
+            name="authprovider"
+            value="keyCloak"
+          >
+            KeyCloak
+          </button>
+          <button
+            type="submit"
+            form="nameform"
+            name="authprovider"
+            value="okta"
+          >
+            Okta
+          </button>
+          <button
+            type="submit"
+            form="nameform"
+            name="authprovider"
+            value="ping"
+          >
+            Ping Identity
+          </button>
+          <button
+            type="submit"
+            form="nameform"
+            name="authprovider"
+            value="shibboleth"
+          >
+            Shibboleth
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

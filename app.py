@@ -7,7 +7,7 @@ import json
 import subprocess
 import urllib3
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates', static_folder='staticFiles')
 global AUTH
 AUTHENTICATE_PAGE = "{RANCHER_URL}/v3/{Auth}/{Auth_lower}"
 

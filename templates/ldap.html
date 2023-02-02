@@ -1,9 +1,47 @@
-<br>
-<h2> Select your favorite ldap provider </h2> </br>
-
-<form action="/rancherform" method="get" id="nameform"> </form>
-
-  <button type="submit" form="nameform" name="authprovider" value="openLdap">openLDAP</button> </br> </br>
-  <button type="submit" form="nameform" name="authprovider" value="freeIpa">freeIPA</button> </br> </br>
-  <button type="submit" form="nameform" name="authprovider" value="activeDirectory">Active Directory</button> </br> </br>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Rancher Auth</title>
+    <link rel="stylesheet" type="text/css" href="/staticFiles/index.css" />
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="sub-container">
+        <h2>Select your favorite ldap provider</h2>
+        <form action="/rancherform" method="get" id="nameform"></form>
+        <div class="button-container">
+          <button
+            type="submit"
+            form="nameform"
+            name="authprovider"
+            value="openLdap"
+          >
+            openLDAP
+          </button>
+          <button
+            type="submit"
+            form="nameform"
+            name="authprovider"
+            value="freeIpa"
+          >
+            freeIPA
+          </button>
+          <button
+            type="submit"
+            form="nameform"
+            name="authprovider"
+            value="activeDirectory"
+          >
+            Active Directory
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
