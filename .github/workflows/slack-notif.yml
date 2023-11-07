@@ -15,9 +15,20 @@ jobs:
 
     steps:
       - name: Check if label added or comment mentions user
-        if: (github.event.action == 'labeled' && contains(github.event.issue.labels.*.name, 'wontfix') || contains(github.event.issue.labels.*.name, 'team/area1')) 
+        if: (github.event.action == 'labeled' && contains(github.event.issue.labels.*.name, 'wontfix') || contains(github.event.issue.labels.*.name, 'bug') || contains(github.event.issue.labels.*.name, 'invalid')) || (github.event.action == 'created' && contains(github.event.comment.body, '@' + github.actor))
         run: |
           echo "Label added: ${{ github.event.label.name }}"
           echo "Issue: ${{ github.event.issue.html_url }}"
           echo "Comment created by: ${{ github.actor }}"
         continue-on-error: true
+
+      - name: Send Slack Notification
+        if: steps.notify-slack.outcome == 'success'
+        uses: rtCamp/action-slack@v4
+        with:
+          fields: issue:${{ github.event.issue.number }}
+          fields_mapping: issue:${{ github.event.issue.html_url }}
+          text: 'Label change on issue: ${{ github.event.issue.html_url }}'
+
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
