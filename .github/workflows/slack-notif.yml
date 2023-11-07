@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Check if label added or comment mentions user
-        if: (github.event.action == 'labeled' && contains(github.event.issue.labels.*.name, 'wontfix') || contains(github.event.issue.labels.*.name, 'bug') || contains(github.event.issue.labels.*.name, 'invalid')) || (github.event.action == 'created' && contains(github.event.comment.body, '@' + github.actor))
+        if: (github.event.action == 'labeled' && contains(github.event.issue.labels.*.name, 'wontfix') || contains(github.event.issue.labels.*.name, 'bug')) || (github.event.action == 'created' && contains(github.event.comment.body, '@' + github.actor))
         run: |
           echo "Label added: ${{ github.event.label.name }}"
           echo "Issue: ${{ github.event.issue.html_url }}"
