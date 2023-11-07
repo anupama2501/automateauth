@@ -24,7 +24,7 @@ jobs:
 
       - name: Send Slack Notification
         if: steps.notify-slack.outcome == 'success'
-        uses: automateauth/action-slack@v4
+        uses: rtCamp/action-slack-notify@v2
         with:
           fields: issue:${{ github.event.issue.number }}
           fields_mapping: issue:${{ github.event.issue.html_url }}
