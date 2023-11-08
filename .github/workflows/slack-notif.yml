@@ -32,11 +32,12 @@ jobs:
         uses: slackapi/slack-github-action@v1.24.0
         with:
           repo_token: ${{secrets.GITHUB_TOKEN}}
-          webhook_url: ${{secrets.SLACK_WEBHOOK_URL}}
           channel: '#project-qa-updates'
           name: 'Github/Slack Workflow Bot'
           fields: issue:${{ github.event.issue.number }}
           fields_mapping: issue:${{ github.event.issue.html_url }}
           text: 'Label change on issue: ${{ github.event.issue.html_url }}'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         
 
