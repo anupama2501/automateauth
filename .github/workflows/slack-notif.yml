@@ -22,7 +22,6 @@ jobs:
           echo "Comment created by: ${{ github.actor }}"
         continue-on-error: true
   slack-workflow-status:
-    if: always()
     name: Post Workflow Status To Slack
     needs:
       - notify-slack
