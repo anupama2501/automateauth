@@ -29,16 +29,9 @@ jobs:
           echo "Issue: ${{ github.event.issue.html_url }}"
           echo "Comment created by: ${{ github.actor }}"
         continue-on-error: true
-  slack-workflow-status:
-    name: Post Workflow Status To Slack
-    needs:
-      - notify-slack
-    runs-on: ubuntu-latest
-    steps:
-      - name: Slack Workflow Notification
-        if: steps.notify-on-label-change.outcome == 'success'
-        id: slack 
-        uses: slackapi/slack-github-action@v1.24.0
+      - name: Send Slack Notification
+        if: steps.notify-slack-on-label-change.outcome == 'success'
+        uses: rtCamp/action-slack@v4
         with:
           channel-id: '#project-qa-updates'
           payload: |
