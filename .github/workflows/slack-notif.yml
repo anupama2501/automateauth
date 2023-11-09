@@ -15,7 +15,15 @@ jobs:
 
     steps:
       - name: Check if label added or comment mentions user
-        if: (github.event.action == 'labeled' && contains(github.event.issue.labels.*.name, 'status/to-test') && contains(github.event.issue.labels.*.name, 'team/area1'))
+        if: |
+          (
+            github.event.action == 'labeled' &&
+            contains(github.event.issue.labels.*.name, 'status/to-test') &&
+            (
+              contains(github.event.issue.labels.*.name, 'team/area1') ||
+              contains(github.event.issue.labels.*.name, 'team/area3')
+            )
+          )
         run: |
           echo "Label added: ${{ github.event.label.name }}"
           echo "Issue: ${{ github.event.issue.html_url }}"
@@ -28,22 +36,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Slack Workflow Notification
+        if: steps.notify-on-label-change.outcome == 'success'
         id: slack 
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: '#project-qa-updates'
           payload: |
                 {
-                  "text": "GitHub Action build result: Label change on issue: ${{ github.event.issue.html_url }}",
-                  "blocks": [
-                 {
-                   "type": "section",
-                   "text": {
-                     "type": "mrkdwn",
-                     "text": "Hello, the issue has the label ${{ github.event.label.name }} added"
-                   }
-                 }
-                ]
+                  "text": "GitHub Action build result: Label change on issue: ${{ github.event.issue.html_url }}, added ${{ github.event.label.name }} label"
                 }     
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
