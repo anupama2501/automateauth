@@ -33,9 +33,18 @@ jobs:
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: '#project-qa-updates'
-          slack-message: "Label change on issue: ${{ github.event.issue.html_url }}"
-          name: 'Github/Slack Workflow Bot'
+          payload: |
+                {
+                  "text": "GitHub Action build result: Label change on issue: ${{ github.event.issue.html_url }}",
+                  "blocks": [
+                 {
+                   "type": "section",
+                   "text": {
+                     "type": "mrkdwn",
+                     "text": "GitHub Action build result: Label change on issue: ${{ github.event.issue.html_url }}"
+                   }
+                 }
+                ]
+                }     
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        
-
