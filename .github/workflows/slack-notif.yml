@@ -31,7 +31,7 @@ jobs:
         continue-on-error: true
       - name: Send Slack Notification
         if: steps.notify-slack-on-label-change.outcome == 'success'
-        uses: rtCamp/action-slack@v4
+        uses: rtcamp/action-slack-notify@v2
         with:
           channel-id: '#project-qa-updates'
           payload: |
