@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Check if label added or comment mentions user
-        if: (github.event.action == 'labeled' && contains(github.event.issue.labels.*.name, 'wontfix'))
+        if: (github.event.action == 'labeled' && contains(github.event.issue.labels.*.name, 'status/to-test') && contains(github.event.issue.labels.*.name, 'team/area1'))
         run: |
           echo "Label added: ${{ github.event.label.name }}"
           echo "Issue: ${{ github.event.issue.html_url }}"
@@ -41,8 +41,8 @@ jobs:
                    "type": "section",
                    "text": {
                      "type": "mrkdwn",
-                     "text": "GitHub Action build result: Label change on issue: ${{ github.event.issue.html_url }}"
-                   }
+                     "text": "Hello, the issue has the label ${{ github.event.label.name }} added"
+                   }, 
                  }
                 ]
                 }     
