@@ -36,7 +36,7 @@ jobs:
           name: 'Github/Slack Workflow Bot'
           fields: issue:${{ github.event.issue.number }}
           fields_mapping: issue:${{ github.event.issue.html_url }}
-          text: 'Label change on issue: ${{ github.event.issue.html_url }}'
+          text: 'Label change on issue'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         
