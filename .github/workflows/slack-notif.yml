@@ -27,7 +27,6 @@ jobs:
         run: |
           echo "Label added: ${{ github.event.label.name }}"
           echo "Issue: ${{ github.event.issue.html_url }}"
-          echo "Comment created by: ${{ github.actor }}"
         continue-on-error: true
       - name: Send Slack Notification
         if: steps.notify-slack-on-label-change.outcome == 'success'
