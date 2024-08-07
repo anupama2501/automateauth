@@ -30,7 +30,7 @@ jobs:
             let hasErrors = '';
             try {
                 const prs = await github.paginate(github.rest.pulls.list, {
-                owner: 'anupama2501',
+                owner: 'rancher',
                 repo: 'shepherd',
                 state: 'open',
                 per_page: 100,
