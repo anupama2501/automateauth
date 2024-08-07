@@ -2,7 +2,7 @@ name: Mark stale pull requests in Shepherd repo
 
 on:
   schedule:
-  - cron: '0 0 0 * *'
+  - cron: '*/2 * * * *'
 
 jobs:
   stale:
@@ -51,7 +51,7 @@ jobs:
                 statesCompare = ["COMMENTED", "CHANGES_REQUESTED"]
                 try{
                   const reviews = await github.rest.pulls.listReviews({
-                    owner: 'anupama2501',
+                    owner: 'rancher',
                     repo: 'shepherd',
                     pull_number: pr.number,
                     per_page: 100,
