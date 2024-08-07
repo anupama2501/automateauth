@@ -57,7 +57,7 @@ jobs:
                     per_page: 100,
                   });
                   if ( reviews.data.length == 0 && createdDate < fiveDaysAgo ) {
-                    noReviewsReport += `${pr.title} #${pr.number} ${pr.html_url} ${pr.user.login}\n`;
+                    noReviewsReport += `*${pr.title}* | #${pr.number} ${pr.html_url} by ${pr.user.login}\n`;
                   } 
                   else {
                       for (const review of reviews.data) {
@@ -73,37 +73,37 @@ jobs:
                     }
                   }
                 } catch( error ){
-                  hasErrors += `${pr.title} | (#${pr.number}) ${pr.html_url} - Error: ${error} \n`;
+                  hasErrors += `*${pr.title}* | (#${pr.number}) ${pr.html_url} - Error: ${error} \n`;
                 }
                 if ( lastReviewDate && (lastReviewDate < threeDaysAgo && updatedDate <= lastReviewDate) && statesCompare.includes(lastReviewStateOne) && statesCompare.includes(lastReviewStateTwo) ) {
-                  needsChanges += `${pr.title} | (#${pr.number}) ${pr.html_url} by ${pr.user.login} \n`;
+                  needsChanges += `*${pr.title}* | (#${pr.number}) ${pr.html_url} by ${pr.user.login} \n`;
                   
                 } else if ( lastReviewDate && (updatedDate > lastReviewDate) && (updatedDate < threeDaysAgo) ){
-                  needsReviews += `${pr.title} |  (#${pr.number}) ${pr.html_url} by ${pr.user.login} \n`;
+                  needsReviews += `*${pr.title}* |  (#${pr.number}) ${pr.html_url} by ${pr.user.login} \n`;
 
                 }  else if ( lastReviewDate && numberOfApprovedState >=2 && (lastReviewDate < threeDaysAgo) && !statesCompare.includes(lastReviewStateOne) ) {
-                  needsMerge += `${pr.title} | (#${pr.number}) ${pr.html_url} by ${pr.user.login} \n`;
+                  needsMerge += `*${pr.title}* | (#${pr.number}) ${pr.html_url} by ${pr.user.login} \n`;
                 }
               }
               if ( noReviewsReport ) {
-                report += `**PRs with no reviews yet:** \n` + noReviewsReport +`\n\n`
+                report += `##PRs with no reviews yet: \n` + noReviewsReport +`\n\n`
               }
               if ( needsReviews ) {
-                report += `**PRs that need reviews:** \n`+ needsReviews +`\n\n` 
+                report += `##PRs that need reviews: \n`+ needsReviews +`\n\n` 
               }
               if ( needsChanges ) {
-                report += `**PRs with changes requested:** \n`+ needsChanges +`\n\n`
+                report += `##PRs with changes requested: \n`+ needsChanges +`\n\n`
               }
               if ( needsMerge ) {
-                report += `**PRs that need to be merged:** \n` + needsMerge
+                report += `##PRs that need to be merged: \n` + needsMerge
               }
               if ( hasErrors ) {
-                report += `**PRs that have errors when fetching:** \n` + hasErrors
+                report += `##PRs that have errors when fetching: \n` + hasErrors
               }
               return report;
 
             } catch( error ){
-              report += `**There is an error getting PR Status report - Error: ${error}** \n`;
+              report += `##There is an error getting PR Status report - Error: ${error} \n`;
               return report;
             }
            
