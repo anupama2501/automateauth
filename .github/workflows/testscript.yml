@@ -12,11 +12,11 @@ jobs:
 
     steps:      
       - name: Checkout code
-        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
         
       - name: Check PRs and compile report
         id: compile_report
-        uses: actions/github-script@211cb3fefb35a799baa5156f9321bb774fe56294
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
         with:
           script: |
             const fiveDaysAgo = new Date(new Date().setDate(new Date().getDate() - 5)); 
