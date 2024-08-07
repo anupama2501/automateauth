@@ -2,7 +2,7 @@ name: Mark stale pull requests in Shepherd repo
 
 on:
   schedule:
-  - cron: '*/2 * * * *'
+  - cron: '*/1 * * * *'
 
 jobs:
   stale:
