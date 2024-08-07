@@ -39,7 +39,7 @@ jobs:
 
                 if (pr.draft) {
                   // debugging
-                  console.log("Skipping draft PRs: {pr.title}")
+                  console.log("Skipping draft PRs: *${pr.title}*")
                   continue;
                 }
                 const createdDate = new Date(pr.created_at); 
