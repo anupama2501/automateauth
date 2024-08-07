@@ -53,7 +53,7 @@ jobs:
                   
                   if (pr.draft) {
                     // debugging
-                    console.log("Skipping draft PRs: ${pr.title}")
+                    console.log(`Skipping draft PR: ${pr.title}`);
                     continue;
                   }
                   if ( reviews.data.length == 0 && createdDate < fiveDaysAgo ) {
