@@ -36,12 +36,6 @@ jobs:
                 per_page: 100,
               });
               for ( const pr of prs ) {
-
-                if (pr.draft) {
-                  continue;
-                  // debugging
-                  console.log("Skipping draft PRs: {pr.title}")
-                }
                 const createdDate = new Date(pr.created_at); 
                 const updatedDate = new Date(pr.updated_at); 
                 let lastReviewDate = null
