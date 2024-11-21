@@ -261,8 +261,6 @@ def parse_structured_changes(file_path, helper_signatures):
             current_file = None
             diff_lines = []
             for line in file:
-                print("printing each line in parser")
-                print(line)
                 # Match file header lines
                 if re.search(r".*\.go:", line):
                     current_file = line.split(".go:")[0].strip()
@@ -273,11 +271,8 @@ def parse_structured_changes(file_path, helper_signatures):
                         file_contents_map[current_file].append(line.strip())
                     else:
                         print(f"Warning: Found a line without a valid file header: {line.strip()}")
-            print("printing the contents of the map", file_contents_map)
-
             # Process the last file
-            if current_file and diff_lines:
-                notes.extend(process_file(file_contents_map, helper_signatures))
+            notes.extend(process_file(file_contents_map, helper_signatures))
     except Exception as e:
         notes.append({
             "file": file_path,
@@ -287,11 +282,10 @@ def parse_structured_changes(file_path, helper_signatures):
     return notes
 
 
-def process_file(file_contents_map, diff_lines, helper_signatures=None):
+def process_file(file_contents_map, helper_signatures=None):
     notes = []
 
     print("IN process_file, this is diff lines and filename")
-    print(diff_lines)
     print(filename)
 
     for filename, contents in file_contents_map.items():
