@@ -252,29 +252,28 @@ def check_recurring_run_comment(file_path):
     return notes
 
 def parse_structured_changes(file_path, helper_signatures):
-
     notes = []
+    file_contents_map = {}
+
     try:
         with open(file_path, "r") as file:
             current_file = None
             diff_lines = []
             for line in file:
                 # Match file header lines
-                if line.endswith(":\n"):
-                    # Process the previous file if one exists
-                    if current_file and diff_lines:
-                        notes.extend(process_file(current_file, diff_lines, helper_signatures))
-                    current_file = line.split(":")[0].strip()
-                    diff_lines = []
+                if re.search(r".*\.go:", line):
+                    current_file = line.split(".go:")[0].strip()
+                    if current_file not in file_contents_map:
+                        file_contents_map[current_file] = []
                 else:
-                    diff_lines.append(line.strip())
+                    if current_file:
+                        file_contents_map[current_file].append(line.strip())
+                    else:
+                        print(f"Warning: Found a line without a valid file header: {line.strip()}")
 
-            print("IN parse_structured")
-            print(current_file)
-            print(diff_lines)
             # Process the last file
             if current_file and diff_lines:
-                notes.extend(process_file(current_file, diff_lines, helper_signatures))
+                notes.extend(process_file(file_contents_map, helper_signatures))
     except Exception as e:
         notes.append({
             "file": file_path,
@@ -284,7 +283,7 @@ def parse_structured_changes(file_path, helper_signatures):
     return notes
 
 
-def process_file(filename, diff_lines, helper_signatures=None):
+def process_file(file_contents_map, diff_lines, helper_signatures=None):
     notes = []
 
     file_content = "\n".join(diff_lines)
@@ -292,9 +291,12 @@ def process_file(filename, diff_lines, helper_signatures=None):
     print(diff_lines)
     print(filename)
 
-    temp_file = f"/tmp/{filename.replace('/', '_')}"
-    with open(temp_file, "w") as temp:
-        temp.write(file_content)
+    for filename, contents in file_contents_map.items():
+        # Create a temporary file with the file's contents
+        temp_file = f"/tmp/{filename.replace('/', '_')}"
+        with open(temp_file, "w") as temp:
+            processed_contents = [line.replace("+", "") for line in contents]
+            temp.write("\n".join(processed_contents))
 
     if filename.endswith("_test.go"):
         
@@ -304,11 +306,11 @@ def process_file(filename, diff_lines, helper_signatures=None):
    #         print(f"Skipping function call checks for {filename} (no helper signatures available)")
         notes.extend(check_recurring_run_comment(temp_file))
 
-    if filename.endswith(".go"):
-        notes.extend(check_function_names(temp_file))
-        notes.extend(check_public_functions_missing_comments(temp_file))
-        notes.extend(check_err_usage(temp_file))
-        notes.extend(check_unused_parameters(temp_file))
+
+    notes.extend(check_function_names(temp_file))
+    notes.extend(check_public_functions_missing_comments(temp_file))
+    notes.extend(check_err_usage(temp_file))
+    notes.extend(check_unused_parameters(temp_file))
 
     return notes
 
@@ -328,9 +330,8 @@ if __name__ == "__main__":
     changed_files = []  
 
     with open(structured_file, "r") as file:
-        content = file.read()
         print("COntent of the structured_file: ")
-        print(content)
+        print(file)
 
     # Extract helper function signatures from non-test `.go` files
     for pr_file in changed_files:
