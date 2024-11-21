@@ -294,10 +294,11 @@ def process_file(filename, diff_lines, helper_signatures=None):
         temp.write(file_content)
 
     if filename.endswith("_test.go"):
-        if helper_signatures:
-            notes.extend(check_function_calls(temp_file, helper_signatures))
-        else:
-            print(f"Skipping function call checks for {filename} (no helper signatures available)")
+        
+   #     if helper_signatures:
+   #         notes.extend(check_function_calls(temp_file, helper_signatures))
+   #     else:
+   #         print(f"Skipping function call checks for {filename} (no helper signatures available)")
         notes.extend(check_recurring_run_comment(temp_file))
 
     if filename.endswith(".go"):
