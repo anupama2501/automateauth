@@ -254,9 +254,8 @@ if __name__ == "__main__":
 
     changed_files = sys.argv[1].split()
 
-    print("Processing structured_changes.txt:")
-    with open("changed_files", "r") as file:
-      print(file.read())
+    print("Processing structured_changes.txt:", changed_files)
+
 
     review_notes = []
     helper_signatures = {}
