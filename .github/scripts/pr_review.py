@@ -240,6 +240,10 @@ def check_recurring_run_comment(file_path):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) < 2:
+      print("Usage: python3 pr_review_script.py <structured_changes_file>")
+      sys.exit(1)
+
     changed_files = sys.argv[1].split()
 
     review_notes = []
