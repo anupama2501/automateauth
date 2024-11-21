@@ -269,6 +269,9 @@ def parse_structured_changes(file_path, helper_signatures):
                 else:
                     diff_lines.append(line.strip())
 
+            print("IN parse_structured")
+            print(current_file)
+            print(diff_lines)
             # Process the last file
             if current_file and diff_lines:
                 notes.extend(process_file(current_file, diff_lines, helper_signatures))
