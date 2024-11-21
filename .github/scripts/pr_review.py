@@ -328,8 +328,9 @@ if __name__ == "__main__":
     changed_files = []  
 
     with open(structured_file, "r") as file:
+        content = file.read()
         print("COntent of the structured_file: ")
-        print(file)
+        print(content)
 
     # Extract helper function signatures from non-test `.go` files
     for pr_file in changed_files:
