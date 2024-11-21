@@ -42,7 +42,7 @@ jobs:
       # Step 3: Run the PR review script
       - name: Run PR Review Script
         run: |
-          python3 .github/scripts/pr_review_script.py
+          python3 .github/scripts/pr_review.py
 
       # Step 4: Post inline comments
       - name: Post inline review comments
