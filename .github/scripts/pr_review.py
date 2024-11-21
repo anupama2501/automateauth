@@ -252,9 +252,36 @@ if __name__ == "__main__":
       print("Usage: python3 pr_review_script.py <structured_changes_file>")
       sys.exit(1)
 
-    changed_files = sys.argv[1].split()
+    # changed_files = sys.argv[1].split()
 
-    print("Processing structured_changes.txt:", changed_files)
+    structured_file = sys.argv[1]
+
+    # Debugging: Print the name of the file to process
+    print(f"Processing structured changes file: {structured_file}")
+
+    # Open and read the structured changes file
+    try:
+        with open(structured_file, "r") as file:
+            content = file.read()
+            print("Content of structured_changes.txt:")
+            print(content)
+    except FileNotFoundError:
+        print(f"Error: File '{structured_file}' not found.")
+        sys.exit(1)
+    except Exception as e:
+        print(f"Error reading file '{structured_file}': {e}")
+        sys.exit(1)
+
+    # Parse the structured changes
+    review_notes = parse_function_signatures(structured_file)
+    
+
+    # Output results
+    print("Review notes generated:")
+    print(review_notes)
+
+    with open("review_notes.json", "w") as notes_file:
+        json.dump(review_notes, notes_file, indent=2)
 
 
     review_notes = []
