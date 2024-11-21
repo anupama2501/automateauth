@@ -245,67 +245,87 @@ def check_recurring_run_comment(file_path):
         })
     return notes
 
+def parse_structured_changes(file_path, helper_signatures):
 
+    notes = []
+    try:
+        with open(file_path, "r") as file:
+            current_file = None
+            diff_lines = []
+            for line in file:
+                # Match file header lines
+                if line.endswith(":\n"):
+                    # Process the previous file if one exists
+                    if current_file and diff_lines:
+                        notes.extend(process_file(current_file, diff_lines, helper_signatures))
+                    current_file = line.split(":")[0].strip()
+                    diff_lines = []
+                else:
+                    diff_lines.append(line.strip())
+
+            # Process the last file
+            if current_file and diff_lines:
+                notes.extend(process_file(current_file, diff_lines, helper_signatures))
+    except Exception as e:
+        notes.append({
+            "file": file_path,
+            "line": 0,
+            "comment": f"Error reading structured changes: {str(e)}"
+        })
+    return notes
+
+
+def process_file(filename, diff_lines, helper_signatures=None):
+    notes = []
+
+    file_content = "\n".join(diff_lines)
+
+    temp_file = f"/tmp/{filename.replace('/', '_')}"
+    with open(temp_file, "w") as temp:
+        temp.write(file_content)
+
+    # Check for test files
+    if filename.endswith("_test.go"):
+        if helper_signatures:
+            notes.extend(check_function_calls(temp_file, helper_signatures))
+        notes.extend(check_recurring_run_comment(temp_file))
+    else:
+        notes.extend(check_function_names(temp_file))
+        notes.extend(check_public_functions_missing_comments(temp_file))
+        notes.extend(check_err_usage(temp_file))
+        notes.extend(check_unused_parameters(temp_file))
+
+    return notes
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-      print("Usage: python3 pr_review_script.py <structured_changes_file>")
-      sys.exit(1)
-
-    # changed_files = sys.argv[1].split()
+        print("Usage: python3 pr_review_script.py <structured_changes_file>")
+        sys.exit(1)
 
     structured_file = sys.argv[1]
 
-    # Debugging: Print the name of the file to process
+    # Debugging: Print structured file
     print(f"Processing structured changes file: {structured_file}")
 
-    # Open and read the structured changes file
-    try:
-        with open(structured_file, "r") as file:
-            content = file.read()
-            print("Content of structured_changes.txt:")
-            print(content)
-    except FileNotFoundError:
-        print(f"Error: File '{structured_file}' not found.")
-        sys.exit(1)
-    except Exception as e:
-        print(f"Error reading file '{structured_file}': {e}")
-        sys.exit(1)
-
-    # Parse the structured changes
-    review_notes = parse_function_signatures(structured_file)
-    
-
-    # Output results
-    print("Review notes generated:")
-    print(review_notes)
-
-    with open("review_notes.json", "w") as notes_file:
-        json.dump(review_notes, notes_file, indent=2)
-
-
-    review_notes = []
     helper_signatures = {}
 
-    # Step 1: Parse helper functions
+    changed_files = []  
+
+    # Extract helper function signatures from non-test `.go` files
     for pr_file in changed_files:
         if pr_file.endswith(".go") and not pr_file.endswith("_test.go"):
+            print(f"Parsing helper signatures from: {pr_file}")
             helper_signatures.update(parse_function_signatures(pr_file))
 
-    # Step 2: Perform checks
-    for pr_file in changed_files:
-        if pr_file.endswith(".go"):
-            # Check for public functions missing comments
-            review_notes.extend(check_public_functions_missing_comments(pr_file))
-            review_notes.extend(check_function_names(pr_file))
-            review_notes.extend(check_err_usage(pr_file))
-            review_notes.extend(check_unused_parameters(pr_file))
+    # Debugging: Print collected helper signatures
+    print("Collected helper signatures:")
+    print(helper_signatures)
 
-        
-        if pr_file.endswith("_test.go"):
-            review_notes.extend(check_function_calls(pr_file, helper_signatures))
-            review_notes.extend(check_recurring_run_comment(pr_file))
+    review_notes = parse_structured_changes(structured_file, helper_signatures)
 
-    # Output results
+    # Output review notes to a JSON file
+    print("Generated review notes:")
+    print(review_notes)
     with open("review_notes.json", "w") as notes_file:
         json.dump(review_notes, notes_file, indent=2)
+
