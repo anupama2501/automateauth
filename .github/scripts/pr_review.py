@@ -94,6 +94,8 @@ def check_function_names(pr_file):
             "line": 0,
             "comment": f"Error reading file {pr_file}: {str(e)}"
         })
+    print("These are the notes from check_function_names")
+    print(notes)
     return notes
 
 
@@ -128,6 +130,8 @@ def check_public_functions_missing_comments(pr_file):
             "line": 0,
             "comment": f"Error reading file {pr_file}: {str(e)}"
         })
+    print("These are the notes from check_function_names")
+    print(notes)
     return notes
 
 
@@ -162,6 +166,8 @@ def check_err_usage(pr_file):
             "line": 0,
             "comment": f"Error reading file {pr_file}: {str(e)}"
         })
+    print("These are the notes from check_function_names")
+    print(notes)
     return notes
 
 def check_unused_parameters(pr_file):
@@ -279,6 +285,9 @@ def process_file(filename, diff_lines, helper_signatures=None):
     notes = []
 
     file_content = "\n".join(diff_lines)
+    print("IN process_file, this is diff lines and filename")
+    print(diff_lines)
+    print(filename)
 
     temp_file = f"/tmp/{filename.replace('/', '_')}"
     with open(temp_file, "w") as temp:
