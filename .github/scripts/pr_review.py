@@ -234,6 +234,7 @@ def check_recurring_run_comment(file_path):
     try:
         with open(file_path, 'r') as file:
             content = file.readlines()
+            print("printing contents in recurring function", content)
             has_go_build_comment = any(line.strip().startswith("//go:build") for line in content)
 
             if not has_go_build_comment:
@@ -260,6 +261,8 @@ def parse_structured_changes(file_path, helper_signatures):
             current_file = None
             diff_lines = []
             for line in file:
+                print("printing each line in parser")
+                print(line)
                 # Match file header lines
                 if re.search(r".*\.go:", line):
                     current_file = line.split(".go:")[0].strip()
@@ -270,6 +273,7 @@ def parse_structured_changes(file_path, helper_signatures):
                         file_contents_map[current_file].append(line.strip())
                     else:
                         print(f"Warning: Found a line without a valid file header: {line.strip()}")
+            print("printing the contents of the map", file_contents_map)
 
             # Process the last file
             if current_file and diff_lines:
@@ -286,7 +290,6 @@ def parse_structured_changes(file_path, helper_signatures):
 def process_file(file_contents_map, diff_lines, helper_signatures=None):
     notes = []
 
-    file_content = "\n".join(diff_lines)
     print("IN process_file, this is diff lines and filename")
     print(diff_lines)
     print(filename)
@@ -297,20 +300,21 @@ def process_file(file_contents_map, diff_lines, helper_signatures=None):
         with open(temp_file, "w") as temp:
             processed_contents = [line.replace("+", "") for line in contents]
             temp.write("\n".join(processed_contents))
+    
 
-    if filename.endswith("_test.go"):
-        
-   #     if helper_signatures:
-   #         notes.extend(check_function_calls(temp_file, helper_signatures))
-   #     else:
-   #         print(f"Skipping function call checks for {filename} (no helper signatures available)")
-        notes.extend(check_recurring_run_comment(temp_file))
+        if filename.endswith("_test"):
+            
+    #     if helper_signatures:
+    #         notes.extend(check_function_calls(temp_file, helper_signatures))
+    #     else:
+    #         print(f"Skipping function call checks for {filename} (no helper signatures available)")
+            notes.extend(check_recurring_run_comment(temp_file))
 
 
-    notes.extend(check_function_names(temp_file))
-    notes.extend(check_public_functions_missing_comments(temp_file))
-    notes.extend(check_err_usage(temp_file))
-    notes.extend(check_unused_parameters(temp_file))
+        notes.extend(check_function_names(temp_file))
+        notes.extend(check_public_functions_missing_comments(temp_file))
+        notes.extend(check_err_usage(temp_file))
+        notes.extend(check_unused_parameters(temp_file))
 
     return notes
 
