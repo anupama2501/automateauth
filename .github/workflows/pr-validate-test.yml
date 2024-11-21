@@ -6,6 +6,8 @@ on:
 
 jobs:
   review-pr:
+    if: github.event.pull_request.user.login == 'anupama2501'
+
     runs-on: ubuntu-latest
 
     steps:
