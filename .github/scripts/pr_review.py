@@ -32,6 +32,8 @@ def check_function_calls(pr_file, helper_signatures):
     try:
         with open(pr_file, 'r') as file:
             content = file.readlines()
+            for line in file:
+              print(f"Processing line: {content.strip()}")
             for i, line in enumerate(content):
                 # Match function calls like `var, err := helper()`
                 match = re.match(r'\s*(?:(?:[a-zA-Z0-9_]+, )*[a-zA-Z0-9_]+\s*):=\s*([a-zA-Z0-9_]+)\s*\(', line)
@@ -68,6 +70,8 @@ def check_function_names(pr_file):
     try:
         with open(pr_file, 'r') as file:
             content = file.readlines()
+            for line in file:
+              print(f"Processing line: {content.strip()}")
             for i, line in enumerate(content):
                 # Match function definitions
                 match = re.match(r'^\s*func\s+([a-zA-Z0-9_]+)\s*\(', line)
@@ -104,6 +108,8 @@ def check_public_functions_missing_comments(pr_file):
     
         with open(pr_file, 'r') as file:
             content = file.readlines()
+            for line in file:
+              print(f"Processing line: {content.strip()}")
             for i, line in enumerate(content):
                 # Match public functions
                 public_func_match = re.match(r'^\s*func\s+([A-Z][a-zA-Z0-9_]*)\s*\(', line)
@@ -133,6 +139,8 @@ def check_err_usage(pr_file):
     try:
         with open(pr_file, 'r') as file:
             content = file.readlines()
+            for line in file:
+              print(f"Processing line: {content.strip()}")
             for i, line in enumerate(content):
                 line = line.strip()
 
@@ -245,6 +253,10 @@ if __name__ == "__main__":
       sys.exit(1)
 
     changed_files = sys.argv[1].split()
+
+    print("Processing structured_changes.txt:")
+    with open("changed_files", "r") as file:
+      print(file.read())
 
     review_notes = []
     helper_signatures = {}
