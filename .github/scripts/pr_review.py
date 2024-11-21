@@ -286,10 +286,10 @@ def process_file(file_contents_map, helper_signatures=None):
     notes = []
 
     print("IN process_file, this is diff lines and filename")
-    print(filename)
 
     for filename, contents in file_contents_map.items():
         # Create a temporary file with the file's contents
+        print("contenst in process_file", contents)
         temp_file = f"/tmp/{filename.replace('/', '_')}"
         with open(temp_file, "w") as temp:
             processed_contents = [line.replace("+", "") for line in contents]
