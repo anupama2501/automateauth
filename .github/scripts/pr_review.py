@@ -322,9 +322,14 @@ if __name__ == "__main__":
     # Debugging: Print structured file
     print(f"Processing structured changes file: {structured_file}")
 
+
     helper_signatures = {}
 
     changed_files = []  
+
+    with open(structured_file, "r") as file:
+        print("COntent of the structured_file: ")
+        print(file)
 
     # Extract helper function signatures from non-test `.go` files
     for pr_file in changed_files:
