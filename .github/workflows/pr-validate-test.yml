@@ -33,9 +33,9 @@ jobs:
                 # Check formatting with gofmt
                 format_issues=$(gofmt -l "$file")
                 if [[ -n "$format_issues" ]]; then
-                echo "$file: NOT FORMATTED" >> structured_changes.txt
+                  echo "$file: NOT FORMATTED" >> structured_changes.txt
                 else
-                echo "$file: FORMATTED" >> structured_changes.txt
+                  echo "$file: FORMATTED" >> structured_changes.txt
                 fi
             fi
           done < <(git diff --name-only origin/main)
