@@ -9,9 +9,6 @@ jobs:
     if: github.event.pull_request.user.login == 'anupama2501'
 
     runs-on: ubuntu-latest
-
-    env:
-      GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
       
     permissions:
       pull-requests: write
@@ -19,7 +16,9 @@ jobs:
     steps:
       # Step 1: Checkout code
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
 
       # Step 2: Get the list of changed files and lines
       - name: Get changed files and lines
