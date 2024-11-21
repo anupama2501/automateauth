@@ -43,6 +43,15 @@ jobs:
       - name: Run PR Review Script
         run: |
           python3 .github/scripts/pr_review.py structured_changes.txt
+      - name: Debug - Check JSON Output
+        run: |
+          if [ -f review_notes.json ]; then
+            echo "review_notes.json found:"
+            cat review_notes.json
+          else
+           echo "review_notes.json not found!"
+           exit 1
+          fi
 
       # Step 4: Post inline comments
       - name: Post inline review comments
