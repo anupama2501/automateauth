@@ -40,6 +40,7 @@ jobs:
                 fi
             fi
           done < <(git diff --name-only origin/main)
+
       # Step 3: Run the PR review script
       - name: Run PR Review Script
         run: |
@@ -53,6 +54,23 @@ jobs:
            echo "review_notes.json not found!"
            exit 1
           fi
+
+      - name: List PR Files
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prFiles = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            const fileList = prFiles.data.map(file => ({
+              filename: file.filename,
+              patch: file.patch
+            }));
+            console.log("Files in PR:", JSON.stringify(fileList, null, 2));
+
 
       # Step 4: Post inline comments
       - name: Post inline review comments
