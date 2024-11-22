@@ -40,7 +40,6 @@ jobs:
                 fi
             fi
           done < <(git diff --name-only origin/main)
-
       # Step 3: Run the PR review script
       - name: Run PR Review Script
         run: |
@@ -55,23 +54,6 @@ jobs:
            exit 1
           fi
 
-      - name: List PR Files
-        uses: actions/github-script@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const prFiles = await github.rest.pulls.listFiles({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
-            });
-            const fileList = prFiles.data.map(file => ({
-              filename: file.filename,
-              patch: file.patch
-            }));
-            console.log("Files in PR:", JSON.stringify(fileList, null, 2));
-
-
       # Step 4: Post inline comments
       - name: Post inline review comments
         uses: actions/github-script@v3
@@ -79,35 +61,19 @@ jobs:
           github-token: ${{ secrets.PAT_TOKEN }}
           script: |
             const fs = require('fs');
-
+            const diffContent = process.env.DIFF_CONTENT;
             const reviewNotes = fs.readFileSync('review_notes.json', 'utf8');
             const issues = JSON.parse(reviewNotes);
-
-            const prFiles = await github.rest.pulls.listFiles({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
-            });
-            const fileList = prFiles.data.map(file => file.filename);
-
-            console.log("Files in PR:", fileList);
-
-            // Post comments for each issue
+            
             issues.forEach(issue => {
-              if (!fileList.includes(issue.path)) {
-                console.error(`File not found in PR diff: ${issue.path}`);
-              } else {
-                console.log(`Posting comment for file: ${issue.path}, line: ${issue.line}`);
-                github.rest.pulls.createReviewComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  pull_number: context.payload.pull_request.number,
-                  body: issue.comment,
-                  path: issue.path,
-                  line: issue.line,
-                  side: 'RIGHT',
-                }).catch(error => {
-                  console.error("Error posting comment:", error);
-                });
-              }
+              github.issues.createComment({
+                issue_number: ${{ github.event.number }},
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.payload.pull_request.number,
+                body: issue.comment,
+                path: issue.file,
+                line: issue.line,
+                side: 'RIGHT' // Comment on the right side of the diff
+              });
             });
