@@ -58,7 +58,7 @@ jobs:
       - name: Post inline review comments
         uses: actions/github-script@v3
         with:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          github-token: ${{ secrets.PAT_TOKEN }}
           script: |
             const fs = require('fs');
             const diffContent = process.env.DIFF_CONTENT;
