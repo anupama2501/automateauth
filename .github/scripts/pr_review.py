@@ -262,8 +262,9 @@ def parse_structured_changes(file_path, helper_signatures):
             diff_lines = []
             for line in file:
                 # Match file header lines
-                if re.search(r".*\.go:", line):
-                    current_file = line.split(".go:")[0].strip()
+                match = re.match(r"(.*\.go):", line)
+                if match:
+                    current_file = match.group(1).strip()
                     if current_file not in file_contents_map:
                         file_contents_map[current_file] = []
                 else:
@@ -290,8 +291,7 @@ def process_file(file_contents_map, helper_signatures=None):
     for filename, contents in file_contents_map.items():
         # Create a temporary file with the file's contents
         print("contenst in process_file", contents)
-        temp_file = f"/tmp/{filename.replace('/', '_')}"
-        with open(temp_file, "w") as temp:
+        with open(filename, "w") as temp:
             processed_contents = [line.replace("+", "") for line in contents]
             temp.write("\n".join(processed_contents))
     
@@ -302,13 +302,13 @@ def process_file(file_contents_map, helper_signatures=None):
     #         notes.extend(check_function_calls(temp_file, helper_signatures))
     #     else:
     #         print(f"Skipping function call checks for {filename} (no helper signatures available)")
-            notes.extend(check_recurring_run_comment(temp_file))
+            notes.extend(check_recurring_run_comment(filename))
 
 
-        notes.extend(check_function_names(temp_file))
-        notes.extend(check_public_functions_missing_comments(temp_file))
-        notes.extend(check_err_usage(temp_file))
-        notes.extend(check_unused_parameters(temp_file))
+        notes.extend(check_function_names(filename))
+        notes.extend(check_public_functions_missing_comments(filename))
+        notes.extend(check_err_usage(filename))
+        notes.extend(check_unused_parameters(filename))
 
     return notes
 
