@@ -61,18 +61,35 @@ jobs:
           github-token: ${{ secrets.PAT_TOKEN }}
           script: |
             const fs = require('fs');
-            const diffContent = process.env.DIFF_CONTENT;
+
             const reviewNotes = fs.readFileSync('review_notes.json', 'utf8');
             const issues = JSON.parse(reviewNotes);
 
+            const prFiles = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            const fileList = prFiles.data.map(file => file.filename);
+
+            console.log("Files in PR:", fileList);
+
+            // Post comments for each issue
             issues.forEach(issue => {
-              github.pulls.createReviewComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: context.payload.pull_request.number,
-                body: issue.comment,
-                path: issue.file,
-                line: issue.line,
-                side: 'RIGHT' // Comment on the right side of the diff
-              });
+              if (!fileList.includes(issue.path)) {
+                console.error(`File not found in PR diff: ${issue.path}`);
+              } else {
+                console.log(`Posting comment for file: ${issue.path}, line: ${issue.line}`);
+                github.rest.pulls.createReviewComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: context.payload.pull_request.number,
+                  body: issue.comment,
+                  path: issue.path,
+                  line: issue.line,
+                  side: 'RIGHT',
+                }).catch(error => {
+                  console.error("Error posting comment:", error);
+                });
+              }
             });
