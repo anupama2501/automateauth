@@ -9,16 +9,12 @@ jobs:
     if: github.event.pull_request.user.login == 'anupama2501'
 
     runs-on: ubuntu-latest
-      
-    permissions:
-      pull-requests: write
 
     steps:
       # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+
 
       # Step 2: Get the list of changed files and lines
       - name: Get changed files and lines
@@ -62,6 +58,7 @@ jobs:
       - name: Post inline review comments
         uses: actions/github-script@v3
         with:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
           script: |
             const fs = require('fs');
             const diffContent = process.env.DIFF_CONTENT;
