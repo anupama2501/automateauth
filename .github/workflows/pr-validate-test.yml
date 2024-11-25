@@ -125,7 +125,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: "Test comment"
-            })`
+            });
 
       # # Step 4: Post inline comments
       # - name: Post inline review comments
