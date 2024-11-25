@@ -104,10 +104,12 @@ jobs:
           github-token: ${{ secrets.PAT_TOKEN }}
           script: |
             const fs = require('fs');
-            const diffContent = process.env.DIFF_CONTENT;
+      
             const reviewNotes = fs.readFileSync('review_notes.json', 'utf8');
             const issues = JSON.parse(reviewNotes);
-              github.rest.pulls.createReviewComment({
+      
+            for (const issue of issues) {
+              await github.rest.pulls.createReviewComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: context.issue.number,
@@ -117,4 +119,4 @@ jobs:
                 side: 'RIGHT',
                 line: issue.line,
               });
-            });
+            }
