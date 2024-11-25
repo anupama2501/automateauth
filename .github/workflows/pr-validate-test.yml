@@ -124,6 +124,8 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
+              path: "golangWorkflowTest/rbac_test.go",
+              line: 10,
               body: "Test comment"
             });
 
