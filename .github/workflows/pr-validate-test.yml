@@ -58,13 +58,13 @@ jobs:
            exit 1
           fi
 
-          - name: Debug Event Payload
-          uses: actions/github-script@v3
-          with:
-            github-token: ${{ secrets.GITHUB_TOKEN }}
-            script: |
-              console.log("Event Payload:", JSON.stringify(context.payload, null, 2));
-  
+      - name: Debug Event Payload
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            console.log("Event Payload:", JSON.stringify(context.payload, null, 2));
+
       - name: Post comments
         uses: actions/github-script@v3
         with:
