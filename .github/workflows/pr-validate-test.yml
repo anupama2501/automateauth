@@ -10,6 +10,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      pull-requests: write
+
     steps:
       # Step 1: Checkout code
       - name: Checkout code
@@ -54,26 +58,46 @@ jobs:
            exit 1
           fi
 
-      # Step 4: Post inline comments
-      - name: Post inline review comments
+          - name: Debug Event Payload
+          uses: actions/github-script@v3
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            script: |
+              console.log("Event Payload:", JSON.stringify(context.payload, null, 2));
+  
+      - name: Post comments
         uses: actions/github-script@v3
         with:
-          github-token: ${{ secrets.PAT_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const fs = require('fs');
-            const diffContent = process.env.DIFF_CONTENT;
-            const reviewNotes = fs.readFileSync('review_notes.json', 'utf8');
-            const issues = JSON.parse(reviewNotes);
-            
-            issues.forEach(issue => {
-              github.issues.createComment({
-                issue_number: ${{ github.event.number }},
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: context.payload.pull_request.number,
-                body: issue.comment,
-                path: issue.file,
-                line: issue.line,
-                side: 'RIGHT' // Comment on the right side of the diff
-              });
+            github.rest.pulls.createReviewComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              body: "Test comment",
+              path: "golangWorkflowTest/rbac_test.go",
+              line: 19,
+              side: "RIGHT",
             });
+
+      # # Step 4: Post inline comments
+      # - name: Post inline review comments
+      #   uses: actions/github-script@v3
+      #   with:
+      #     github-token: ${{ secrets.PAT_TOKEN }}
+      #     script: |
+      #       const fs = require('fs');
+      #       const diffContent = process.env.DIFF_CONTENT;
+      #       const reviewNotes = fs.readFileSync('review_notes.json', 'utf8');
+      #       const issues = JSON.parse(reviewNotes);
+      #         github.issues.createComment({
+      #           issue_number: ${{ github.event.number }},
+      #           owner: context.repo.owner,
+      #           repo: context.repo.repo,
+      #           pull_number: context.payload.pull_request.number,
+      #           body: issue.comment,
+      #           path: issue.file,
+      #           line: issue.line,
+      #           side: 'RIGHT' // Comment on the right side of the diff
+      #         });
+      #       });
