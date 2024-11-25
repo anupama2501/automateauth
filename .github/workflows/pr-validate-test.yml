@@ -87,13 +87,16 @@ jobs:
           github-token: ${{ secrets.PAT_TOKEN }}
           script: |
             github.rest.pulls.createReviewComment({
-              pull_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              path: "golangWorkflowTest/rbac_test.go",
-              side: "RIGHT",
+              pull_number: context.issue.number,
               body: "Test comment",
-              position: 10
+              commit_id: github.event.pull_request.head.sha,
+              path: "golangWorkflowTest/rbac_test.go",
+              position: 10,
+              side: "RIGHT",
+              line: 10,
+              subject_type: ""
             });
 
       # # Step 4: Post inline comments
