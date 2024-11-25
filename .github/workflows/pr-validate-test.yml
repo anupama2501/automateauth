@@ -86,8 +86,9 @@ jobs:
         with:
           github-token: ${{ secrets.PAT_TOKEN }}
           script: |
-            github.rest.issues.createComment({
+            github.rest.pulls.createReviewComment({
               issue_number: context.issue.number,
+              pull_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               path: "golangWorkflowTest/rbac_test.go",
