@@ -81,40 +81,40 @@ jobs:
       #         side: "RIGHT",
       #       });
 
-      - name: Comment on PR
+      # - name: Comment on PR
+      #   uses: actions/github-script@v6
+      #   with:
+      #     github-token: ${{ secrets.PAT_TOKEN }}
+      #     script: |
+      #       github.rest.pulls.createReviewComment({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         pull_number: context.issue.number,
+      #         body: "Test comment",
+      #         commit_id: context.payload.pull_request.head.sha,
+      #         path: "golangWorkflowTest/rbac_test.go",
+      #         side: "RIGHT",
+      #         line: 10,
+      #       });
+
+      # Step 4: Post inline comments
+      - name: Post inline review comments
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.PAT_TOKEN }}
           script: |
-            github.rest.pulls.createReviewComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number,
-              body: "Test comment",
-              commit_id: context.payload.pull_request.head.sha,
-              path: "golangWorkflowTest/rbac_test.go",
-              side: "RIGHT",
-              line: 10,
+            const fs = require('fs');
+            const diffContent = process.env.DIFF_CONTENT;
+            const reviewNotes = fs.readFileSync('review_notes.json', 'utf8');
+            const issues = JSON.parse(reviewNotes);
+              github.rest.pulls.createReviewComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number,
+                body: issue.comment,
+                commit_id: context.payload.pull_request.head.sha,
+                path: issue.file,
+                side: 'RIGHT',
+                line: issue.line,
+              });
             });
-
-      # # Step 4: Post inline comments
-      # - name: Post inline review comments
-      #   uses: actions/github-script@v3
-      #   with:
-      #     github-token: ${{ secrets.PAT_TOKEN }}
-      #     script: |
-      #       const fs = require('fs');
-      #       const diffContent = process.env.DIFF_CONTENT;
-      #       const reviewNotes = fs.readFileSync('review_notes.json', 'utf8');
-      #       const issues = JSON.parse(reviewNotes);
-      #         github.issues.createComment({
-      #           issue_number: ${{ github.event.number }},
-      #           owner: context.repo.owner,
-      #           repo: context.repo.repo,
-      #           pull_number: context.payload.pull_request.number,
-      #           body: issue.comment,
-      #           path: issue.file,
-      #           line: issue.line,
-      #           side: 'RIGHT' // Comment on the right side of the diff
-      #         });
-      #       });
