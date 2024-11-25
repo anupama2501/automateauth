@@ -93,10 +93,8 @@ jobs:
               body: "Test comment",
               commit_id: context.payload.pull_request.head.sha,
               path: "golangWorkflowTest/rbac_test.go",
-              position: 10,
               side: "RIGHT",
               line: 10,
-              subject_type: ""
             });
 
       # # Step 4: Post inline comments
