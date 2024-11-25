@@ -94,7 +94,6 @@ jobs:
               line: 10,
               side: "RIGHT",
               body: "Test comment"
-              pull_number: context.payload.pull_request.number,
             });
 
       # # Step 4: Post inline comments
