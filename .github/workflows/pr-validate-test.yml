@@ -61,49 +61,49 @@ jobs:
       - name: Debug Event Payload
         uses: actions/github-script@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.PAT_TOKEN }}
           script: |
             console.log("Event Payload:", JSON.stringify(context.payload, null, 2));
 
-      - name: List PR Files
-        uses: actions/github-script@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const listFiles = async () => {
-              const prFiles = await github.rest.pulls.listFiles({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: context.payload.pull_request.number,
-              });
-              const fileList = prFiles.data.map(file => ({
-                filename: file.filename,
-                patch: file.patch
-              }));
-              console.log("Files in PR:", JSON.stringify(fileList, null, 2));
-            };
-            listFiles();
+      # - name: List PR Files
+      #   uses: actions/github-script@v3
+      #   with:
+      #     github-token: ${{ secrets.PAT_TOKEN}}
+      #     script: |
+      #       const listFiles = async () => {
+      #         const prFiles = await github.rest.pulls.listFiles({
+      #           owner: context.repo.owner,
+      #           repo: context.repo.repo,
+      #           pull_number: context.payload.pull_request.number,
+      #         });
+      #         const fileList = prFiles.data.map(file => ({
+      #           filename: file.filename,
+      #           patch: file.patch
+      #         }));
+      #         console.log("Files in PR:", JSON.stringify(fileList, null, 2));
+      #       };
+      #       listFiles();
 
-      - name: Debug Diff for Specific File
-        uses: actions/github-script@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const prFiles = await github.rest.pulls.listFiles({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
-            });
-            prFiles.data.forEach(file => {
-              if (file.filename === "golangWorkflowTest/rbac_test.go") {
-                console.log("Diff for file:", file.patch);
-              }
-            });
+      # - name: Debug Diff for Specific File
+      #   uses: actions/github-script@v3
+      #   with:
+      #     github-token: ${{ secrets.PAT_TOKEN }}
+      #     script: |
+      #       const prFiles = await github.rest.pulls.listFiles({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         pull_number: context.payload.pull_request.number,
+      #       });
+      #       prFiles.data.forEach(file => {
+      #         if (file.filename === "golangWorkflowTest/rbac_test.go") {
+      #           console.log("Diff for file:", file.patch);
+      #         }
+      #       });
 
       - name: Post comments
         uses: actions/github-script@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.PAT_TOKEN }}
           script: |
             github.issues.createComment({
               owner: context.repo.owner,
