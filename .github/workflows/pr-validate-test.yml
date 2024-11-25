@@ -100,20 +100,32 @@ jobs:
       #         }
       #       });
 
-      - name: Post comments
-        uses: actions/github-script@v3
+      # - name: Post comments
+      #   uses: actions/github-script@v3
+      #   with:
+      #     github-token: ${{ secrets.PAT_TOKEN }}
+      #     script: |
+      #       github.issues.createComment({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         pull_number: context.payload.pull_request.number,
+      #         body: "Test comment",
+      #         path: "golangWorkflowTest/rbac_test.go",
+      #         line: 10,
+      #         side: "RIGHT",
+      #       });
+
+      - name: Comment on PR
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.PAT_TOKEN }}
           script: |
-            github.issues.createComment({
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
-              body: "Test comment",
-              path: "golangWorkflowTest/rbac_test.go",
-              line: 10,
-              side: "RIGHT",
-            });
+              body: "Test comment"
+            })`
 
       # # Step 4: Post inline comments
       # - name: Post inline review comments
