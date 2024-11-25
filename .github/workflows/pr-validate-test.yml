@@ -92,7 +92,7 @@ jobs:
               repo: context.repo.repo,
               path: "golangWorkflowTest/rbac_test.go",
               side: "RIGHT",
-              body: "Test comment"
+              body: "Test comment",
               position: 10
             });
 
