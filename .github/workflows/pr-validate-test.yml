@@ -91,7 +91,7 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.issue.number,
               body: "Test comment",
-              commit_id: github.event.pull_request.head.sha,
+              commit_id: context.payload.pull_request.head.sha,
               path: "golangWorkflowTest/rbac_test.go",
               position: 10,
               side: "RIGHT",
