@@ -94,7 +94,6 @@ jobs:
               line: 10,
               side: "RIGHT",
               body: "Test comment"
-              start_line: 1
               pull_number: context.payload.pull_request.number,
             });
 
